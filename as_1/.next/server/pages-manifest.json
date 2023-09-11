@@ -1,0 +1,7 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/home-with-fetch": "pages/home-with-fetch.js",
+  "/send-weather-data": "pages/send-weather-data.js"
+}

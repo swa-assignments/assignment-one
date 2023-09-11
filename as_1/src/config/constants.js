@@ -1,4 +1,4 @@
-export const LOCATIONS = ["Aarhus", "Copenhagen", "Horsens"];
+export const LOCATIONS = ["Aarhus", "Copenhagen", "Horsens", "Chisinau"];
 
 export const FORECAST_TYPE = {
   TEMPERATURE: "temperature",
