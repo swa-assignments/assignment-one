@@ -1,31 +1,53 @@
 "use client";
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from "@/components/Header";
 import SelectLocation from "@/components/SelectLocation";
 
 import { FORECAST_TYPE, LOCATIONS, UNITS } from "../utils/constants";
+import {Weather} from "@/models/Weather.model";
 
-function WeatherPageContainer({latestMeasurement}) {
+function WeatherPageContainer({weatherService}) {
     // Set the city location to Aarhus by default
-    const [location, setLocation] = useState("Aarhus");
+    const [location, setLocation] = useState(LOCATIONS[0]);
     // Store the measurements for the selected location
     const [forecastData, setForecastData] = useState([]);
 
     // Store the measurements for the selected location
-    // const [measurements, setMeasurements] = useState({
-    //     latestMeasurement: [],
-    //     minimumTemperature: null,
-    //     maximumTemperature: null,
-    //     totalPrecipitation: null,
-    //     averageWindSpeed: null,
-    // });
+    const [measurements, setMeasurements] = useState({
+        latestMeasurement: [],
+        minimumTemperature: null,
+        maximumTemperature: null,
+        totalPrecipitation: null,
+        averageWindSpeed: null,
+    });
+
+    async function handleLoadData() {
+        const [data] = await Promise.all([
+            weatherService.getDataByCity(location)
+        ]);
+
+        const weatherModal =
+            Weather(data);
+
+        setMeasurements({
+            latestMeasurement: weatherModal.getLatestMeasurements(),
+            minimumTemperature: weatherModal.getMinimumTemperatureForToday(),
+            maximumTemperature: weatherModal.getMaximumTemperatureForToday(),
+            totalPrecipitation: weatherModal.getTotalPrecipitation(),
+            averageWindSpeed: weatherModal.getAverageWindSpeed(),
+        });
+    }
+
+    // Load the data when the location changes
+    useEffect(() => {
+        handleLoadData().then();
+    }, [location]);
 
     // Will change the location to the selected one
     function handleChangeLocation(location) {
         setLocation(location);
     }
-
 
     return (
         <div>
@@ -33,7 +55,6 @@ function WeatherPageContainer({latestMeasurement}) {
 
             <SelectLocation value={location} onChange={handleChangeLocation}/>
 
-            <hr />
             <h2>The hourly forecast for the next 24 hours</h2>
             <table>
                 <thead>
@@ -60,8 +81,6 @@ function WeatherPageContainer({latestMeasurement}) {
                 </tbody>
             </table>
 
-            <hr />
-
             <h2>All data for the latest measurement of each kind</h2>
             <table>
                 <thead>
@@ -72,7 +91,7 @@ function WeatherPageContainer({latestMeasurement}) {
                 </thead>
 
                 <tbody>
-                {latestMeasurement.map((item, index) => (
+                {measurements.latestMeasurement.map((item, index) => (
                     <tr key={index}>
                         <td>{item.getType()}</td>
                         <td>{item.getValueWithUnit()}</td>
@@ -81,43 +100,24 @@ function WeatherPageContainer({latestMeasurement}) {
                 </tbody>
             </table>
 
-            <hr />
-
             <h2>About last day</h2>
             <table>
                 <thead>
                 <tr>
-                    <th>Minimum temperature: Celsius</th>
-                    <th>Maximum temperature: Celsius</th>
-                    <th>Maximum temperature: Celsius</th>
+                    <th>Minimum temperature ({UNITS[FORECAST_TYPE.TEMPERATURE]})</th>
+                    <th>Maximum temperature ({UNITS[FORECAST_TYPE.TEMPERATURE]})</th>
+                    <th>Total precipitation ({UNITS[FORECAST_TYPE.PRECIPITATION]})</th>
+                    <th>Average wind speed ({UNITS[FORECAST_TYPE.WIND_SPEED]})</th>
                 </tr>
-                {/*<tr>*/}
-                {/*    <th>Minimum temperature ({UNITS[FORECAST_TYPE.TEMPERATURE]})</th>*/}
-                {/*    <th>Maximum temperature ({UNITS[FORECAST_TYPE.TEMPERATURE]})</th>*/}
-                {/*    <th>Total precipitation ({UNITS[FORECAST_TYPE.PRECIPITATION]})</th>*/}
-                {/*    <th>Average wind speed ({UNITS[FORECAST_TYPE.WIND_SPEED]})</th>*/}
-                {/*</tr>*/}
                 </thead>
 
                 <tbody>
                 <tr>
-                    <td>20C</td>
-                    <td>40C</td>
-                    <td>222</td>
-                    <td>22 Km/H</td>
+                    <td>{measurements.minimumTemperature?.toFixed(1)}</td>
+                    <td>{measurements.maximumTemperature?.toFixed(1)}</td>
+                    <td>{measurements.totalPrecipitation?.toFixed(1)}</td>
+                    <td>{measurements.averageWindSpeed?.toFixed(2)}</td>
                 </tr>
-                {/*<tr>*/}
-                {/*    <td>{measurements.minimumTemperature}</td>*/}
-                {/*    <td>{measurements.maximumTemperature}</td>*/}
-                {/*    <td>{measurements.totalPrecipitation}</td>*/}
-                {/*    <td>{measurements.averageWindSpeed}</td>*/}
-                {/*</tr>*/}
-                {/*<tr>*/}
-                {/*    <td>{measurements.minimumTemperature}</td>*/}
-                {/*    <td>{measurements.maximumTemperature}</td>*/}
-                {/*    <td>{measurements.totalPrecipitation}</td>*/}
-                {/*    <td>{measurements.averageWindSpeed}</td>*/}
-                {/*</tr>*/}
                 </tbody>
             </table>
         </div>
