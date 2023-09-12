@@ -31,7 +31,8 @@ const WeatherPageContainer = (props) => {
       props.weatherService.getForecast(location),
     ]);
 
-    const weatherModal = Weather(data);
+    const weatherModal =
+        Weather(data);
 
     setMeasurements({
       latestMeasurement: weatherModal.getLatestMeasurements(),
