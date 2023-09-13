@@ -3,14 +3,17 @@ import React, { useState } from 'react';
 
 import Header from "../../components/Header";
 import SelectLocation from "../../components/SelectLocation";
+import SelectForecastType from "../../components/SelectForecastType";
+import { WeatherService } from "../../services/WeatherService";
 
+import { xmlFetcher } from "../../utils/fetchers";
 import { FORECAST_TYPE, LOCATIONS, UNITS } from "../../utils/constants";
 
 function getInputValue(e, name) {
   return e.target[name].value;
 }
 
-/* const weatherService = WeatherService(xmlFetcher); */
+const weatherService = WeatherService(xmlFetcher);
 
 function Page() {
     const [type, setType] = useState(FORECAST_TYPE.TEMPERATURE);
@@ -22,10 +25,10 @@ function Page() {
     function handleChangeLocation(location) {
       setLocation(location);
     }
-/*
+
     function handleChangeForecastType(type) {
       setType(type);
-    } */
+    }
 
     async function handleSubmit(e) {
       e.preventDefault();
@@ -55,7 +58,7 @@ function Page() {
     <div>
     <Header />
       <form onSubmit={handleSubmit}>
-        {/* <SelectForecastType value={type} onChange={handleChangeForecastType} /> */}
+        <SelectForecastType value={type} onChange={handleChangeForecastType} />
         <SelectLocation value={location} onChange={handleChangeLocation} />
 
         <div>
