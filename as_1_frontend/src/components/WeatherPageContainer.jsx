@@ -113,10 +113,10 @@ function WeatherPageContainer({weatherService}) {
 
                 <tbody>
                 <tr>
-                    <td>{measurements.minimumTemperature?.toFixed(1)}</td>
-                    <td>{measurements.maximumTemperature?.toFixed(1)}</td>
-                    <td>{measurements.totalPrecipitation?.toFixed(1)}</td>
-                    <td>{measurements.averageWindSpeed?.toFixed(2)}</td>
+                    <td>{measurements.minimumTemperature}</td>
+                    <td>{measurements.maximumTemperature}</td>
+                    <td>{measurements.totalPrecipitation}</td>
+                    <td>{measurements.averageWindSpeed}</td>
                 </tr>
                 </tbody>
             </table>
