@@ -1,8 +1,17 @@
+"use client"
 import React from 'react';
 
-function Page(props) {
+import WeatherPageContainer from '@/components/WeatherPageContainer';
+import {WeatherService} from "@/services/WeatherService";
+import {xmlFetcher} from "@/utils/fetchers";
+
+function Page() {
+    const weatherService = WeatherService(xmlFetcher);
+
     return (
-        <div>home-with-xmlhttprequest</div>
+        <>
+            <WeatherPageContainer weatherService={weatherService}/>
+        </>
     );
 }
 
