@@ -1,4 +1,4 @@
-import { FormattedWeatherData, WeatherData } from "../models/FormattedWeatherData.model";
+import { FormattedWeatherData } from "../models/FormattedWeatherData.model";
 
 export const WeatherForecast = function (data) {
   return Object.assign(
