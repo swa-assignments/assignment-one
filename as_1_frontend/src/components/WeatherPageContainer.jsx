@@ -23,8 +23,9 @@ function WeatherPageContainer({weatherService}) {
     });
 
     async function handleLoadData() {
-        const [data] = await Promise.all([
-            weatherService.getDataByCity(location)
+        const [data, forecastData] = await Promise.all([
+            weatherService.getDataByCity(location),
+            weatherService.getForecast(location)
         ]);
 
         const weatherModal =
@@ -37,6 +38,7 @@ function WeatherPageContainer({weatherService}) {
             totalPrecipitation: weatherModal.getTotalPrecipitation(),
             averageWindSpeed: weatherModal.getAverageWindSpeed(),
         });
+        setForecastData(forecastData);
     }
 
     // Load the data when the location changes
@@ -66,18 +68,13 @@ function WeatherPageContainer({weatherService}) {
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td>asdas</td>
-                    <td>asdas</td>
-                    <td>asdas</td>
-                </tr>
-                {/*{forecastData.map((forecast, index) => (*/}
-                {/*    <tr key={index}>*/}
-                {/*        <td>{forecast.getFormattedTime()}</td>*/}
-                {/*        <td>{forecast.getType()}</td>*/}
-                {/*        <td>{forecast.getForecast()}</td>*/}
-                {/*    </tr>*/}
-                {/*))}*/}
+                 {forecastData.map((forecast, index) => (
+                    <tr key={index}>
+                        <td>{forecast.getFormattedTime()}</td>
+                      <td>{forecast.getType()}</td>
+                        <td>{forecast.getForecast()}</td>
+                    </tr>
+                ))} 
                 </tbody>
             </table>
 

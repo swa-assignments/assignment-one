@@ -1,4 +1,5 @@
 import { FormattedWeatherData } from "../models/FormattedWeatherData.model";
+import { WeatherForecast } from "../models/WeatherForecast";
 
 // Service to fetch weather data implemented via JS factory functions
 export const WeatherService = function (fetcher) {
